@@ -3,6 +3,8 @@ package ru.loginov.dev.entities;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "products")
@@ -36,6 +38,9 @@ public class Product {
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
+
+    @OneToMany(mappedBy = "product")
+    private final List<CartItem> cartItems = new ArrayList<>();
 
     public Product() {}
 
