@@ -21,7 +21,7 @@ public class Manufacturer {
     private String country;
 
     @OneToMany(mappedBy = "manufacturer")
-    private final List<Product> products = new ArrayList<>();
+    private List<Product> products = new ArrayList<>();
 
     public Manufacturer() {}
 

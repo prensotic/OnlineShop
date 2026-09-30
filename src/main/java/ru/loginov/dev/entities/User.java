@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -30,6 +32,12 @@ public class User {
 
     @OneToOne(mappedBy = "user")
     private UserPersonalData userPersonalData;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders = new ArrayList<>();
 
     public User(){}
 

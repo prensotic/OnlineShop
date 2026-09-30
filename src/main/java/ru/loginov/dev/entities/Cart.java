@@ -17,7 +17,7 @@ public class Cart {
     private User user;
 
     @OneToMany(mappedBy = "cart")
-    private final List<CartItem> cartItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
 
     public Cart() {}
 

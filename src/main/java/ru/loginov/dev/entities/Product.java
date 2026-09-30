@@ -40,7 +40,10 @@ public class Product {
     private boolean isActive;
 
     @OneToMany(mappedBy = "product")
-    private final List<CartItem> cartItems = new ArrayList<>();
+    private List<CartItem> cartItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
     public Product() {}
 
