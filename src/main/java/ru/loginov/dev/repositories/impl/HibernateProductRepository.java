@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public class HibernateProductRepository implements ProductRepository {
-    public SessionFactory sessionFactory;
+    public final SessionFactory sessionFactory;
 
     public HibernateProductRepository(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;

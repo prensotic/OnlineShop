@@ -6,12 +6,20 @@ import org.springframework.stereotype.Repository;
 import ru.loginov.dev.entities.User;
 import ru.loginov.dev.repositories.UserRepository;
 
+import java.util.List;
+
 @Repository
 public class HibernateUserRepository implements UserRepository {
     public final SessionFactory sessionFactory;
 
     public HibernateUserRepository(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
+    }
+
+    @Override
+    public List<User> getAllUsers(){
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("select u from User u", User.class).list();
     }
 
     @Override
