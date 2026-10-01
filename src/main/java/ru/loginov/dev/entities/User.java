@@ -2,6 +2,7 @@ package ru.loginov.dev.entities;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.resource.beans.container.internal.CdiBeanContainerImmediateAccessImpl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
 
     public User(){}
 

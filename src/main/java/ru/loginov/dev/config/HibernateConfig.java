@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.hibernate.HibernateTransactionManager;
+import ru.loginov.dev.entities.*;
 
 @Configuration
 public class HibernateConfig {
@@ -12,6 +13,17 @@ public class HibernateConfig {
         org.hibernate.cfg.Configuration configuration = new org.hibernate.cfg.Configuration();
 
         configuration
+                .addAnnotatedClasses( User.class,
+                        UserPersonalData.class,
+                        Category.class,
+                        Manufacturer.class,
+                        Product.class,
+                        Cart.class,
+                        CartItem.class,
+                        Order.class,
+                        OrderItem.class,
+                        Payment.class,
+                        Comment.class)
                 .addPackage("ru.loginov.dev.entities")
                 .setProperty("hibernate.connection.driver_class", "org.postgresql.Driver")
                 .setProperty("hibernate.connection.url", "jdbc:postgresql://localhost:5432/online_shop")
