@@ -1,11 +1,13 @@
 package ru.loginov.dev.repositories.impl;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import ru.loginov.dev.entities.Manufacturer;
 import ru.loginov.dev.repositories.ManufacturerRepository;
 
 import java.util.List;
 
+@Repository
 public class HibernateManufacturerRepository implements ManufacturerRepository {
     private final SessionFactory sessionFactory;
 

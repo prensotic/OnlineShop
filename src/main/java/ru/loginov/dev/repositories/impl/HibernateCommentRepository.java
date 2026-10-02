@@ -1,11 +1,13 @@
 package ru.loginov.dev.repositories.impl;
 
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import ru.loginov.dev.entities.Comment;
 import ru.loginov.dev.repositories.CommentRepository;
 
 import java.util.List;
 
+@Repository
 public class HibernateCommentRepository implements CommentRepository {
     private final SessionFactory sessionFactory;
 
