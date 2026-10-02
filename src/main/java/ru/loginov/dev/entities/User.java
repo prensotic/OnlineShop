@@ -31,6 +31,9 @@ public class User {
     @Column(name = "is_active", nullable = false)
     private boolean isActive;
 
+    @Column(nullable = false)
+    private String role;
+
     @OneToOne(mappedBy = "user")
     private UserPersonalData userPersonalData;
 
@@ -45,11 +48,12 @@ public class User {
 
     public User(){}
 
-    public User(String username, String email, String passwordHash, boolean isActive) {
+    public User(String username, String email, String passwordHash, boolean isActive, String role) {
         this.username = username;
         this.email = email;
         this.passwordHash = passwordHash;
         this.isActive = isActive;
+        this.role = role;
     }
 
     public long getId() {
@@ -90,6 +94,14 @@ public class User {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setActive(boolean active) {
