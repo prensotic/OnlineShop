@@ -5,11 +5,11 @@ import ru.loginov.dev.entities.User;
 import java.util.List;
 
 public interface UserRepository {
-    public List<User> getAllUsers();
-    public User findUserById(long id);
-    public User findUserByEmail(String email);
-    public User findByUsername(String username);
-    public void saveUser(User user);
-    public void updateUser(User user);
-    public void deleteUser(long id);
+    List<User> getAllUsers();
+    User findUserById(long id);
+    User findUserByEmail(String email);
+    User findByUsername(String username);
+    void saveUser(User user);
+    void updateUser(User user);
+    void deleteUser(long id);
 }

@@ -19,6 +19,6 @@ public class HibernateCartRepository implements CartRepository {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select c from Cart c where c.user.id = :userId", Cart.class)
                 .setParameter("userId", userId)
-                .getSingleResult();
+                .uniqueResult();
     }
 }

@@ -18,7 +18,7 @@ public class HibernateUserPersonalData implements UserPersonalData {
     @Override
     public List<UserPersonalData> getAllUsersPersonalData() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from UserPersonalData u", UserPersonalData.class).list();
+        return session.createQuery("select u from UserPersonalData u", UserPersonalData.class).getResultList();
     }
 
     @Override
@@ -32,7 +32,7 @@ public class HibernateUserPersonalData implements UserPersonalData {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from UserPersonalData u where u.user.id = :userId", UserPersonalData.class)
                 .setParameter("userId", userId)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     @Override

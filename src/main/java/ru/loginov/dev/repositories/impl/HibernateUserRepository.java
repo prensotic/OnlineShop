@@ -19,7 +19,7 @@ public class HibernateUserRepository implements UserRepository {
     @Override
     public List<User> getAllUsers(){
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from User u", User.class).list();
+        return session.createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class HibernateUserRepository implements UserRepository {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class HibernateUserRepository implements UserRepository {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select u from User u where u.username = :username", User.class)
                 .setParameter("username", username)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     @Override

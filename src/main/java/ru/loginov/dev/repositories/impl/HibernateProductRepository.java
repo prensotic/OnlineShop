@@ -19,7 +19,7 @@ public class HibernateProductRepository implements ProductRepository {
     @Override
     public List<Product> getAllProducts() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select p from Product p", Product.class).list();
+        return session.createQuery("select p from Product p", Product.class).getResultList();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class HibernateProductRepository implements ProductRepository {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("select p from Product p where p.productName = :productName", Product.class)
                 .setParameter("productName", productName)
-                .getSingleResult();
+                .uniqueResult();
     }
 
     @Override
