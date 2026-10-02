@@ -18,14 +18,12 @@ public class HibernateCartItemRepository implements CartItemRepository {
 
     @Override
     public CartItem findCartItemById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(CartItem.class, id);
+        return sessionFactory.getCurrentSession().get(CartItem.class, id);
     }
 
     @Override
     public CartItem findByCartAndProduct(long cartId, long productId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select c from CartItem c " +
+        return sessionFactory.getCurrentSession().createQuery("select c from CartItem c " +
                                 "where c.cart.id = :cartId and c.product.id = :productId", CartItem.class)
                 .setParameter("cartId", cartId)
                 .setParameter("productId", productId)
@@ -34,28 +32,24 @@ public class HibernateCartItemRepository implements CartItemRepository {
 
     @Override
     public List<CartItem> findByCartId(long cartId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select c from CartItem c where c.cart.id = :cartId", CartItem.class)
+        return sessionFactory.getCurrentSession().createQuery("select c from CartItem c where c.cart.id = :cartId", CartItem.class)
                 .setParameter("cartId", cartId)
                 .getResultList();
     }
 
     @Override
     public void saveCartItem(CartItem cartItem) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(cartItem);
+        sessionFactory.getCurrentSession().persist(cartItem);
     }
 
     @Override
     public void updateCartItem(CartItem cartItem) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(cartItem);
+        sessionFactory.getCurrentSession().merge(cartItem);
     }
 
     @Override
     public void deleteCartItem(long id) {
-        Session session = sessionFactory.getCurrentSession();
         CartItem cartItem = findCartItemById(id);
-        if(cartItem != null) session.remove(cartItem);
+        if(cartItem != null) sessionFactory.getCurrentSession().remove(cartItem);
     }
 }

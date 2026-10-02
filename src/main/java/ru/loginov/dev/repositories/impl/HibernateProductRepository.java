@@ -18,56 +18,48 @@ public class HibernateProductRepository implements ProductRepository {
 
     @Override
     public List<Product> getAllProducts() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select p from Product p", Product.class).getResultList();
+        return sessionFactory.getCurrentSession().createQuery("select p from Product p", Product.class).getResultList();
     }
 
     @Override
     public List<Product> getProductsByCategoryId(long categoryId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select p from Product p where p.category.id = :categoryId", Product.class)
+        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.category.id = :categoryId", Product.class)
                 .setParameter("categoryId", categoryId)
                 .getResultList();
     }
 
     @Override
     public List<Product> getProductsByManufacturerId(long manufacturerId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select p from Product p where p.manufacturer.id = :manufacturerId", Product.class)
+        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.manufacturer.id = :manufacturerId", Product.class)
                 .setParameter("manufacturerId", manufacturerId)
                 .getResultList();
     }
 
     @Override
     public Product findProductById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Product.class, id);
+        return sessionFactory.getCurrentSession().get(Product.class, id);
     }
 
     @Override
     public Product findProductByName(String productName) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select p from Product p where p.productName = :productName", Product.class)
+        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.productName = :productName", Product.class)
                 .setParameter("productName", productName)
                 .uniqueResult();
     }
 
     @Override
     public void saveProduct(Product product) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(product);
+        sessionFactory.getCurrentSession().persist(product);
     }
 
     @Override
     public void updateProduct(Product product) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(product);
+        sessionFactory.getCurrentSession().merge(product);
     }
 
     @Override
     public void deleteProduct(long id) {
-        Session session = sessionFactory.getCurrentSession();
         Product product = findProductById(id);
-        if(product != null) session.remove(product);
+        if(product != null) sessionFactory.getCurrentSession().remove(product);
     }
 }

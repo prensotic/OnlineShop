@@ -17,40 +17,34 @@ public class HibernateUserPersonalData implements UserPersonalData {
 
     @Override
     public List<UserPersonalData> getAllUsersPersonalData() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from UserPersonalData u", UserPersonalData.class).getResultList();
+        return sessionFactory.getCurrentSession().createQuery("select u from UserPersonalData u", UserPersonalData.class).getResultList();
     }
 
     @Override
     public UserPersonalData findUserPersonalDataById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(UserPersonalData.class, id);
+        return sessionFactory.getCurrentSession().get(UserPersonalData.class, id);
     }
 
     @Override
     public UserPersonalData findUserPersonalDataByUserId(long userId) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from UserPersonalData u where u.user.id = :userId", UserPersonalData.class)
+        return sessionFactory.getCurrentSession().createQuery("select u from UserPersonalData u where u.user.id = :userId", UserPersonalData.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
     }
 
     @Override
     public void saveUserPersonalData(UserPersonalData userPersonalData) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(userPersonalData);
+        sessionFactory.getCurrentSession().persist(userPersonalData);
     }
 
     @Override
     public void updateUserPersonalData(UserPersonalData userPersonalData) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(userPersonalData);
+        sessionFactory.getCurrentSession().merge(userPersonalData);
     }
 
     @Override
     public void deleteUserPersonalData(long id) {
-        Session session = sessionFactory.getCurrentSession();
         UserPersonalData userPersonalData = findUserPersonalDataById(id);
-        if(userPersonalData != null) session.remove(userPersonalData);
+        if(userPersonalData != null) sessionFactory.getCurrentSession().remove(userPersonalData);
     }
 }

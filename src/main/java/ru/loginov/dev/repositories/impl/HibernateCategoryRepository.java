@@ -18,40 +18,34 @@ public class HibernateCategoryRepository implements CategoryRepository {
 
     @Override
     public List<Category> getAllCategories() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select c from Category c", Category.class).getResultList();
+        return sessionFactory.getCurrentSession().createQuery("select c from Category c", Category.class).getResultList();
     }
 
     @Override
     public Category findCategoryById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Category.class, id);
+        return sessionFactory.getCurrentSession().get(Category.class, id);
     }
 
     @Override
     public Category findCategoryByName(String categoryName) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select c from Category c where c.categoryName = :categoryName", Category.class)
+        return sessionFactory.getCurrentSession().createQuery("select c from Category c where c.categoryName = :categoryName", Category.class)
                 .setParameter("categoryName", categoryName)
                 .uniqueResult();
     }
 
     @Override
     public void saveCategory(Category category) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(category);
+        sessionFactory.getCurrentSession().persist(category);
     }
 
     @Override
     public void updateCategory(Category category) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(category);
+        sessionFactory.getCurrentSession().merge(category);
     }
 
     @Override
     public void deleteCategory(long id) {
-        Session session = sessionFactory.getCurrentSession();
         Category category = findCategoryById(id);
-        if(category != null) session.remove(category);
+        if(category != null) sessionFactory.getCurrentSession().remove(category);
     }
 }

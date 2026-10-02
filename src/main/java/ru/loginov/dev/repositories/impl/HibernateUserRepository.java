@@ -18,48 +18,41 @@ public class HibernateUserRepository implements UserRepository {
 
     @Override
     public List<User> getAllUsers(){
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from User u", User.class).getResultList();
+        return sessionFactory.getCurrentSession().createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
     public User findUserById(long id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(User.class, id);
+        return sessionFactory.getCurrentSession().get(User.class, id);
     }
 
     @Override
     public User findUserByEmail(String email) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from User u where u.email = :email", User.class)
+        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
                 .uniqueResult();
     }
 
     @Override
     public User findByUsername(String username) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from User u where u.username = :username", User.class)
+        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.username = :username", User.class)
                 .setParameter("username", username)
                 .uniqueResult();
     }
 
     @Override
     public void saveUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
+        sessionFactory.getCurrentSession().persist(user);
     }
 
     @Override
     public void updateUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.merge(user);
+        sessionFactory.getCurrentSession().merge(user);
     }
 
     @Override
     public void deleteUser(long id) {
-        Session session = sessionFactory.getCurrentSession();
         User user = findUserById(id);
-        if(user != null) session.remove(user);
+        if(user != null) sessionFactory.getCurrentSession().remove(user);
     }
 }
