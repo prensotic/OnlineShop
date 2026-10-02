@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public class HibernateUserPersonalData implements UserPersonalData {
-    public final SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public HibernateUserPersonalData(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
@@ -30,7 +30,7 @@ public class HibernateUserPersonalData implements UserPersonalData {
     @Override
     public UserPersonalData findUserPersonalDataByUserId(long userId) {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("select u from UserPersonalData u where u.user_id = :userId", UserPersonalData.class)
+        return session.createQuery("select u from UserPersonalData u where u.user.id = :userId", UserPersonalData.class)
                 .setParameter("userId", userId)
                 .getSingleResult();
     }
