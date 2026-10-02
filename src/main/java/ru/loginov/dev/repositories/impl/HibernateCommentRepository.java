@@ -20,6 +20,7 @@ public class HibernateCommentRepository implements CommentRepository {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("select c from Comment c where c.product.id = :productId", Comment.class)
+                .setParameter("productId", productId)
                 .getResultList();
     }
 
