@@ -47,12 +47,11 @@ public class HibernateProductRepository implements ProductRepository {
     }
 
     @Override
-    public Product findProductByName(String productName) {
-        return sessionFactory
-                .getCurrentSession()
-                .createQuery("select p from Product p where p.productName = :productName", Product.class)
-                .setParameter("productName", productName)
-                .uniqueResult();
+    public List<Product> findProductsByName(String productName) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("from Product p where lower(p.productName) like lower(:name)", Product.class)
+                .setParameter("name","%" + productName + "%")
+                .getResultList();
     }
 
     @Override

@@ -9,7 +9,7 @@ public interface ProductRepository {
     List<Product> getProductsByCategoryId(long categoryId);
     List<Product> getProductsByManufacturerId(long manufacturerId);
     Product findProductById(long id);
-    Product findProductByName(String productName);
+    List<Product> findProductsByName(String productName);
     void saveProduct(Product product);
     void updateProduct(Product product);
     void deleteProduct(long id);
