@@ -2,10 +2,10 @@ package ru.loginov.dev.repositories;
 
 import ru.loginov.dev.entities.Category;
 
-import java.util.Set;
+import java.util.List;
 
 public interface CategoryRepository {
-    Set<Category> getAllCategories();
+    List<Category> getAllCategories();
     Category findCategoryById(long id);
     Category findCategoryByName(String categoryName);
     boolean existsByName(String categoryName);

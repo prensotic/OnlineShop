@@ -6,6 +6,7 @@ import ru.loginov.dev.exceptions.categoryExceptions.CategoryAlreadyExistsExcepti
 import ru.loginov.dev.exceptions.categoryExceptions.CategoryNotFoundException;
 import ru.loginov.dev.repositories.CategoryRepository;
 
+import java.util.List;
 import java.util.Set;
 
 public class CategoryService {
@@ -16,7 +17,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Set<Category> getAllCategories(){
+    public List<Category> getAllCategories(){
         return categoryRepository.getAllCategories();
     }
 

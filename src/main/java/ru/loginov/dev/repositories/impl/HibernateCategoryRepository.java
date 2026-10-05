@@ -6,6 +6,7 @@ import ru.loginov.dev.entities.Category;
 import ru.loginov.dev.repositories.CategoryRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -17,13 +18,11 @@ public class HibernateCategoryRepository implements CategoryRepository {
     }
 
     @Override
-    public Set<Category> getAllCategories() {
-        return new HashSet<>(
-                sessionFactory
+    public List<Category> getAllCategories() {
+        return sessionFactory
                         .getCurrentSession()
                         .createQuery("FROM Category", Category.class)
-                        .getResultList()
-        );
+                        .getResultList();
     }
 
     @Override
