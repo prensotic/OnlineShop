@@ -1,5 +1,6 @@
 package ru.loginov.dev.services;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.loginov.dev.entities.Category;
 import ru.loginov.dev.exceptions.categoryExceptions.CategoryAlreadyExistsException;
@@ -7,8 +8,8 @@ import ru.loginov.dev.exceptions.categoryExceptions.CategoryNotFoundException;
 import ru.loginov.dev.repositories.CategoryRepository;
 
 import java.util.List;
-import java.util.Set;
 
+@Service
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 

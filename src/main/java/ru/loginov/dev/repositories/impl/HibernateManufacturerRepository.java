@@ -31,6 +31,17 @@ public class HibernateManufacturerRepository implements ManufacturerRepository {
     }
 
     @Override
+    public Manufacturer findManufacturerByName(String manufacturerName) {
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery(
+                        "select m from Manufacturer m " +
+                                "where m.manufacturerName = :manufacturerName", Manufacturer.class)
+                .setParameter("manufacturerName", manufacturerName)
+                .uniqueResult();
+    }
+
+    @Override
     public boolean existsManufacturerName(String manufacturerName) {
         Long count = sessionFactory
                 .getCurrentSession()
@@ -38,6 +49,21 @@ public class HibernateManufacturerRepository implements ManufacturerRepository {
                         "select count(m) from Manufacturer m " +
                                 "where m.manufacturerName = :manufacturerName", Long.class)
                 .setParameter("manufacturerName", manufacturerName)
+                .uniqueResult();
+
+        return count > 0;
+    }
+
+    @Override
+    public boolean existsManufacturerNameAndIdNot(String manufacturerName, long id) {
+        Long count = sessionFactory
+                .getCurrentSession()
+                .createQuery("select count(m) from Manufacturer m " +
+                                "where m.manufacturerName = :manufacturerName " +
+                                "and m.id <> :id",
+                        Long.class)
+                .setParameter("manufacturerName", manufacturerName)
+                .setParameter("id", id)
                 .uniqueResult();
 
         return count > 0;
