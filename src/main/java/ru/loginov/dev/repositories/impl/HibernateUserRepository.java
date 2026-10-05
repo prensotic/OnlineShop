@@ -41,6 +41,13 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
+    public User findByRole(String role) {
+        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.role = :role", User.class)
+                .setParameter("role", role)
+                .uniqueResult();
+    }
+
+    @Override
     public void saveUser(User user) {
         sessionFactory.getCurrentSession().persist(user);
     }
