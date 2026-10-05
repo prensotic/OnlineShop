@@ -31,6 +31,19 @@ public class HibernateManufacturerRepository implements ManufacturerRepository {
     }
 
     @Override
+    public boolean existsManufacturerName(String manufacturerName) {
+        Long count = sessionFactory
+                .getCurrentSession()
+                .createQuery(
+                        "select count(m) from Manufacturer m " +
+                                "where m.manufacturerName = :manufacturerName", Long.class)
+                .setParameter("manufacturerName", manufacturerName)
+                .uniqueResult();
+
+        return count > 0;
+    }
+
+    @Override
     public void saveManufacturer(Manufacturer manufacturer) {
         sessionFactory.getCurrentSession().persist(manufacturer);
     }
