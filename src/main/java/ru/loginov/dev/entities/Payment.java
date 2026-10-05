@@ -3,6 +3,7 @@ package ru.loginov.dev.entities;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,38 +24,26 @@ public class Payment {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private String status;
+
+    @Column(nullable = false)
+    private BigDecimal amount;
+
     public Payment() {}
 
-    public Payment(Order order, String paymentMethod){
+    public Payment(Order order, BigDecimal amount, String paymentMethod) {
         this.order = order;
+        this.amount = amount;
         this.paymentMethod = paymentMethod;
+        this.status = "PENDING";
     }
 
-    public long getId() {
-        return id;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public Object getStatus() {
+        return status;
     }
 }

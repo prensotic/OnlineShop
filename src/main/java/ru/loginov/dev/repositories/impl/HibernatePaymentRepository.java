@@ -41,15 +41,4 @@ public class HibernatePaymentRepository implements PaymentRepository {
     public void savePayment(Payment payment) {
         sessionFactory.getCurrentSession().persist(payment);
     }
-
-    @Override
-    public void updatePayment(Payment payment) {
-        sessionFactory.getCurrentSession().merge(payment);
-    }
-
-    @Override
-    public void deletePayment(long id) {
-        Payment payment = findPaymentById(id);
-        if(payment != null) sessionFactory.getCurrentSession().remove(payment);
-    }
 }
