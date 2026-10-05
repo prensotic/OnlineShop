@@ -18,7 +18,8 @@ public class HibernateUserRepository implements UserRepository {
 
     @Override
     public List<User> getAllUsers(){
-        return sessionFactory.getCurrentSession().createQuery("select u from User u", User.class).getResultList();
+        return sessionFactory
+                .getCurrentSession().createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
@@ -28,14 +29,17 @@ public class HibernateUserRepository implements UserRepository {
 
     @Override
     public User findUserByEmail(String email) {
-        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.email = :email", User.class)
+        return sessionFactory
+                .getCurrentSession().createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)
                 .uniqueResult();
     }
 
     @Override
     public User findByUsername(String username) {
-        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.username = :username", User.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select u from User u where u.username = :username", User.class)
                 .setParameter("username", username)
                 .uniqueResult();
     }

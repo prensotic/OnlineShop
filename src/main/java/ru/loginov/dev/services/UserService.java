@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import ru.loginov.dev.entities.User;
-import ru.loginov.dev.exceptions.userExceptions.UserAlreadyExistException;
+import ru.loginov.dev.exceptions.userExceptions.UserAlreadyExistsException;
 import ru.loginov.dev.exceptions.userExceptions.UserNotFoundException;
 import ru.loginov.dev.repositories.UserRepository;
 
@@ -74,10 +74,10 @@ public class UserService {
         if (password == null || password.isBlank()) throw new IllegalArgumentException("Пароль указан некорректно");
 
         if (userRepository.findByUsername(username) != null)
-            throw new UserAlreadyExistException("Пользователь с таким именем уже существует");
+            throw new UserAlreadyExistsException("Пользователь с таким именем уже существует");
 
         if (userRepository.findUserByEmail(email) != null)
-            throw new UserAlreadyExistException("Пользователь с такой почтой уже существует");
+            throw new UserAlreadyExistsException("Пользователь с такой почтой уже существует");
 
         User user = new User();
 
@@ -94,13 +94,12 @@ public class UserService {
     public void updateUserProfile(long id, String username, String email) {
         if (id <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
 
-        if (username == null || username.isBlank()) throw new IllegalArgumentException("Имя пользователя указано некорректно");
+        if (username == null || username.isBlank())
+            throw new IllegalArgumentException("Имя пользователя указано некорректно");
 
         if (email == null || email.isBlank()) throw new IllegalArgumentException("Email указан некорректно");
 
-        User user = userRepository.findUserById(id);
-
-        if (user == null) throw new UserNotFoundException("Пользователь с ID: " + id + " не найден");
+        User user = findUserById(id);
 
         user.setUsername(username);
         user.setEmail(email);
@@ -110,9 +109,7 @@ public class UserService {
     public void deleteUser(long id){
         if(id <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
 
-        User user = userRepository.findUserById(id);
-
-        if (user == null) throw new UserNotFoundException("Пользователь с ID: " + id + " не найден");
+        User user = findUserById(id);
 
         userRepository.deleteUser(id);
     }

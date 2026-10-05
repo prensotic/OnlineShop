@@ -18,7 +18,9 @@ public class HibernateCategoryRepository implements CategoryRepository {
 
     @Override
     public List<Category> getAllCategories() {
-        return sessionFactory.getCurrentSession().createQuery("select c from Category c", Category.class).getResultList();
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select c from Category c", Category.class).getResultList();
     }
 
     @Override
@@ -28,7 +30,9 @@ public class HibernateCategoryRepository implements CategoryRepository {
 
     @Override
     public Category findCategoryByName(String categoryName) {
-        return sessionFactory.getCurrentSession().createQuery("select c from Category c where c.categoryName = :categoryName", Category.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select c from Category c where c.categoryName = :categoryName", Category.class)
                 .setParameter("categoryName", categoryName)
                 .uniqueResult();
     }

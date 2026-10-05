@@ -27,7 +27,9 @@ public class HibernateOrderItemRepository implements OrderItemRepository {
     public OrderItem findOrderItemByOrderIdAndProductId(long orderId, long productId) {
         return sessionFactory
                 .getCurrentSession()
-                .createQuery("select o from OrderItem o where o.order.id = :orderId and o.product.id = :productId", OrderItem.class)
+                .createQuery(
+                        "select o from OrderItem o where o.order.id = :orderId and o.product.id = :productId",
+                        OrderItem.class)
                 .setParameter("orderId", orderId)
                 .setParameter("productId", productId)
                 .uniqueResult();

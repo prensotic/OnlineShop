@@ -1,8 +1,10 @@
 package ru.loginov.dev.repositories;
 
+import ru.loginov.dev.entities.UserPersonalData;
+
 import java.util.List;
 
-public interface UserPersonalData {
+public interface UserPersonalDataRepository {
     List<UserPersonalData> getAllUsersPersonalData();
     UserPersonalData findUserPersonalDataById(long id);
     UserPersonalData findUserPersonalDataByUserId(long userId);

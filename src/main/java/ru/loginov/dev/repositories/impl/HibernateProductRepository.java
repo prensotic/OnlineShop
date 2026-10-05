@@ -18,19 +18,25 @@ public class HibernateProductRepository implements ProductRepository {
 
     @Override
     public List<Product> getAllProducts() {
-        return sessionFactory.getCurrentSession().createQuery("select p from Product p", Product.class).getResultList();
+        return sessionFactory
+                .getCurrentSession().createQuery("select p from Product p", Product.class).getResultList();
     }
 
     @Override
     public List<Product> getProductsByCategoryId(long categoryId) {
-        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.category.id = :categoryId", Product.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select p from Product p where p.category.id = :categoryId", Product.class)
                 .setParameter("categoryId", categoryId)
                 .getResultList();
     }
 
     @Override
     public List<Product> getProductsByManufacturerId(long manufacturerId) {
-        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.manufacturer.id = :manufacturerId", Product.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select p from Product p where p.manufacturer.id = :manufacturerId",
+                        Product.class)
                 .setParameter("manufacturerId", manufacturerId)
                 .getResultList();
     }
@@ -42,7 +48,9 @@ public class HibernateProductRepository implements ProductRepository {
 
     @Override
     public Product findProductByName(String productName) {
-        return sessionFactory.getCurrentSession().createQuery("select p from Product p where p.productName = :productName", Product.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select p from Product p where p.productName = :productName", Product.class)
                 .setParameter("productName", productName)
                 .uniqueResult();
     }

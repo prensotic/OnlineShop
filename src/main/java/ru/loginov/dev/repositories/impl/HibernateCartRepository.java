@@ -16,7 +16,9 @@ public class HibernateCartRepository implements CartRepository {
 
     @Override
     public Cart findCartByUserId(long userId) {
-        return sessionFactory.getCurrentSession().createQuery("select c from Cart c where c.user.id = :userId", Cart.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select c from Cart c where c.user.id = :userId", Cart.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
     }

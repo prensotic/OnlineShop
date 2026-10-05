@@ -1,14 +1,14 @@
 package ru.loginov.dev.repositories.impl;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import ru.loginov.dev.repositories.UserPersonalData;
+import ru.loginov.dev.entities.UserPersonalData;
+import ru.loginov.dev.repositories.UserPersonalDataRepository;
 
 import java.util.List;
 
 @Repository
-public class HibernateUserPersonalData implements UserPersonalData {
+public class HibernateUserPersonalData implements UserPersonalDataRepository {
     private final SessionFactory sessionFactory;
 
     public HibernateUserPersonalData(SessionFactory sessionFactory){
@@ -17,7 +17,9 @@ public class HibernateUserPersonalData implements UserPersonalData {
 
     @Override
     public List<UserPersonalData> getAllUsersPersonalData() {
-        return sessionFactory.getCurrentSession().createQuery("select u from UserPersonalData u", UserPersonalData.class).getResultList();
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select u from UserPersonalData u", UserPersonalData.class).getResultList();
     }
 
     @Override
@@ -27,7 +29,10 @@ public class HibernateUserPersonalData implements UserPersonalData {
 
     @Override
     public UserPersonalData findUserPersonalDataByUserId(long userId) {
-        return sessionFactory.getCurrentSession().createQuery("select u from UserPersonalData u where u.user.id = :userId", UserPersonalData.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select u from UserPersonalData u where u.user.id = :userId",
+                        UserPersonalData.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
     }

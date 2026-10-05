@@ -32,7 +32,9 @@ public class HibernateCartItemRepository implements CartItemRepository {
 
     @Override
     public List<CartItem> findByCartId(long cartId) {
-        return sessionFactory.getCurrentSession().createQuery("select c from CartItem c where c.cart.id = :cartId", CartItem.class)
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery("select c from CartItem c where c.cart.id = :cartId", CartItem.class)
                 .setParameter("cartId", cartId)
                 .getResultList();
     }
