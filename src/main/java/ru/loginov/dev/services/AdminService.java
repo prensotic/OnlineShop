@@ -1,6 +1,6 @@
 package ru.loginov.dev.services;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.loginov.dev.entities.User;
@@ -18,7 +18,7 @@ public class AdminService {
 
     @Transactional
     public void createInitialSuperAdmin(){
-        if(userRepository.findByRole("SUPER_ADMIN") != null){
+        if(userRepository.existsByRole("SUPER_ADMIN")){
             return;
         }
 

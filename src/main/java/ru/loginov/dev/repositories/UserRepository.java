@@ -9,7 +9,8 @@ public interface UserRepository {
     User findUserById(long id);
     User findUserByEmail(String email);
     User findByUsername(String username);
-    User findByRole(String role);
+    boolean existsByRole(String role);
+    List<User> findUsersByRole(String role);
     void saveUser(User user);
     void updateUser(User user);
     void deleteUser(long id);

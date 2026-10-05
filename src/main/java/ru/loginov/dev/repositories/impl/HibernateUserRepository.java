@@ -41,10 +41,20 @@ public class HibernateUserRepository implements UserRepository {
     }
 
     @Override
-    public User findByRole(String role) {
-        return sessionFactory.getCurrentSession().createQuery("select u from User u where u.role = :role", User.class)
+    public boolean existsByRole(String role) {
+        Long count = sessionFactory.getCurrentSession()
+                .createQuery("select count(u) from User u where u.role = :role", Long.class)
                 .setParameter("role", role)
                 .uniqueResult();
+        return count > 0;
+    }
+
+    @Override
+    public List<User> findUsersByRole(String role) {
+        return sessionFactory.getCurrentSession()
+                .createQuery("FROM User u WHERE u.role = :role", User.class)
+                .setParameter("role", role)
+                .getResultList();
     }
 
     @Override
