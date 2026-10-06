@@ -40,10 +40,10 @@ public class Order {
 
     public Order() {}
 
-    public Order(User user, BigDecimal amount, String status) {
+    public Order(User user, BigDecimal amount) {
         this.user = user;
         this.amount = amount;
-        this.status = status;
+        this.status = "PENDING";
         this.isDeleted = false;
     }
 

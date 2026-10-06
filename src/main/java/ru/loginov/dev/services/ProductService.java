@@ -70,7 +70,7 @@ public class ProductService {
         if(manufacturer == null)
             throw new IllegalArgumentException("Производитель товара указан некорректно");
 
-        if(price == null || price.doubleValue() <= 0)
+        if(price == null || price.compareTo(BigDecimal.ZERO) <= 0)
             throw new IllegalArgumentException("Цена товара указана некорректно");
 
         if(unit == null || unit.isBlank())
