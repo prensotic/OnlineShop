@@ -22,7 +22,7 @@ public class User {
     private String email;
 
     @Column(name = "password_hash", nullable = false)
-    private String passwordHash;
+    private String password;
 
     @CreationTimestamp
     @Column(name = "registration_date", nullable = false)
@@ -48,10 +48,10 @@ public class User {
 
     public User(){}
 
-    public User(String username, String email, String passwordHash, boolean isActive, String role) {
+    public User(String username, String email, String password, boolean isActive, String role) {
         this.username = username;
         this.email = email;
-        this.passwordHash = passwordHash;
+        this.password = password;
         this.isActive = isActive;
         this.role = role;
     }
@@ -76,12 +76,12 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public LocalDateTime getRegistrationDate() {

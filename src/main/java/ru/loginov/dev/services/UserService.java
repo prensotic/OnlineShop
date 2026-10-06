@@ -83,7 +83,7 @@ public class UserService {
 
         user.setUsername(username);
         user.setEmail(email);
-        user.setPasswordHash(passwordEncoder.encode(password));
+        user.setPassword(passwordEncoder.encode(password));
         user.setActive(true);
         user.setRole(role);
 
