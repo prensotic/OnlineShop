@@ -1,4 +1,4 @@
-package ru.loginov.dev.exceptions.userPersonalDataExceptions;
+package ru.loginov.dev.exceptions.userExceptions;
 
 public class UserPersonalDataAlreadyExistsException extends RuntimeException {
     public UserPersonalDataAlreadyExistsException(String message) {

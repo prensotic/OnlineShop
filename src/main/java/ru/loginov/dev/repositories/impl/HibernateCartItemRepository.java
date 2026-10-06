@@ -31,7 +31,7 @@ public class HibernateCartItemRepository implements CartItemRepository {
     }
 
     @Override
-    public List<CartItem> findByCartId(long cartId) {
+    public List<CartItem> findCartItemsByCartId(long cartId) {
         return sessionFactory
                 .getCurrentSession()
                 .createQuery("select c from CartItem c where c.cart.id = :cartId", CartItem.class)
@@ -53,5 +53,13 @@ public class HibernateCartItemRepository implements CartItemRepository {
     public void deleteCartItem(long id) {
         CartItem cartItem = findCartItemById(id);
         if(cartItem != null) sessionFactory.getCurrentSession().remove(cartItem);
+    }
+
+    @Override
+    public void deleteAllByCartId(long cartId) {
+        sessionFactory.getCurrentSession()
+                .createMutationQuery("delete from CartItem c where c.cart.id = :cartId")
+                .setParameter("cartId", cartId)
+                .executeUpdate();
     }
 }

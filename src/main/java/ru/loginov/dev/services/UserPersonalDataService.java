@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.loginov.dev.entities.User;
 import ru.loginov.dev.entities.UserPersonalData;
-import ru.loginov.dev.exceptions.userPersonalDataExceptions.UserPersonalDataAlreadyExistsException;
-import ru.loginov.dev.exceptions.userPersonalDataExceptions.UserPersonalDataNotFound;
+import ru.loginov.dev.exceptions.userExceptions.UserPersonalDataAlreadyExistsException;
+import ru.loginov.dev.exceptions.userExceptions.UserPersonalDataNotFound;
 import ru.loginov.dev.repositories.UserPersonalDataRepository;
 
 import java.util.List;
