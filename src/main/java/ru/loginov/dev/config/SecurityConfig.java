@@ -18,45 +18,71 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/auth/registeration",
-                                "/auth/login",
-                                "/products"
-                        ).permitAll()
-                        .requestMatchers(
-                                "/profile/**"
-                        ).authenticated()
-                        .requestMatchers(
-                                "/admin/**"
-                        ).hasRole("ADMIN")
-                        .anyRequest().authenticated()
-                )
-                .formLogin(form -> form
-                        .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/login")
-                        .defaultSuccessUrl("/products", true)
-                        .failureUrl("/auth/login?error")
-                        .permitAll()
-                );
-
-        return http.build();
-    }
-
-    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public AuthenticationManager authenticationManager(
-            UserDetailsService userDetailsService, PasswordEncoder passwordEncoder){
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
+            UserDetailsService userDetailsService,
+            PasswordEncoder passwordEncoder) {
+
+        System.out.println("=== AUTHENTICATION MANAGER CREATED ===");
+        System.out.println("UserDetailsService: " + userDetailsService);
+        System.out.println("PasswordEncoder: " + passwordEncoder);
+
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider(userDetailsService);
+
         provider.setPasswordEncoder(passwordEncoder);
+
         return new ProviderManager(provider);
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            AuthenticationManager authenticationManager) throws Exception {
+
+        System.out.println("=== SECURITY CONFIG CREATED ===");
+        System.out.println("AuthenticationManager: " + authenticationManager);
+
+        http
+                .authenticationManager(authenticationManager)
+
+                .csrf(AbstractHttpConfigurer::disable)
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/registration",
+                                "/auth/login",
+                                "/products"
+                        ).permitAll()
+
+                        .requestMatchers("/profile/**")
+                        .authenticated()
+
+                        .requestMatchers("/admin/**")
+                        .hasRole("ADMIN")
+
+                        .anyRequest()
+                        .authenticated()
+                )
+
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/products", true)
+                        .failureHandler((request, response, exception) -> {
+                            System.out.println("=== AUTHENTICATION FAILED ===");
+                            System.out.println("Exception: " + exception.getClass().getName());
+                            System.out.println("Message: " + exception.getMessage());
+
+                            response.sendRedirect("/auth/login?error");
+                        })
+                        .permitAll()
+                );
+
+        return http.build();
     }
 }

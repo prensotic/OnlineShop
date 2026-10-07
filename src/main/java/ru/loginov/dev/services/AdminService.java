@@ -26,7 +26,7 @@ public class AdminService {
 
         admin.setUsername("super_admin");
         admin.setEmail("super_admin@online_shop.com");
-        admin.setPasswordHash(passwordEncoder.encode("online_shop_super_admin"));
+        admin.setPassword(passwordEncoder.encode("online_shop_super_admin"));
         admin.setActive(true);
         admin.setRole("SUPER_ADMIN");
 
