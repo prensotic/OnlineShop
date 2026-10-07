@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Управление товарами</title>
+</head>
+<body>
+<h1>Управление товарами</h1>
+<a th:href="@{/dashboard/product/new-product}">
+    <button type="button">Добавить товар</button>
+</a>
+<p th:if="${#lists.isEmpty(products)}">Товары отсутствуют.</p>
+<table th:unless="${#lists.isEmpty(products)}" border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Цена</th>
+        <th>Количество</th>
+        <th>Активен</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.price}"></td>
+        <td th:text="${product.quantity}"></td>
+        <td th:text="${product.active ? 'Да' : 'Нет'}"></td>
+        <td>
+            <a th:href="@{/dashboard/products/{id}(id=${product.id})}">
+                Подробнее
+            </a>
+            <a th:href="@{/dashboard/products/edit-product/{id}(id=${product.id})}">
+                Редактировать
+            </a>
+            <form th:action="@{/dashboard/products/{id}(id=${product.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/}">На главную</a>
+</body>
+</html>

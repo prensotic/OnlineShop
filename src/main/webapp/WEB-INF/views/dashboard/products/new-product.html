@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Добавление товара</title>
+</head>
+<body>
+<h1>Добавление товара</h1>
+<form th:action="@{/dashboard/products}"
+      th:object="${product}"
+      method="post">
+    <div>
+        <label for="productName">Название товара:</label>
+        <input type="text" id="productName"
+               th:field="*{productName}" required>
+    </div>
+    <div>
+        <label for="productDescription">Описание:</label>
+        <textarea id="productDescription"
+                  th:field="*{productDescription}"></textarea>
+    </div>
+    <div>
+        <label for="categoryId">ID категории:</label>
+        <input type="number" id="categoryId" name="categoryId"
+               min="1" required>
+    </div>
+    <div>
+        <label for="manufacturerId">ID производителя:</label>
+        <input type="number" id="manufacturerId" name="manufacturerId"
+               min="1" required>
+    </div>
+    <div>
+        <label for="price">Цена:</label>
+        <input type="number" id="price" th:field="*{price}"
+               min="0.01" step="0.01" required>
+    </div>
+    <div>
+        <label for="unit">Единица измерения:</label>
+        <input type="text" id="unit" th:field="*{unit}" required>
+    </div>
+    <div>
+        <label for="quantity">Количество:</label>
+        <input type="number" id="quantity" th:field="*{quantity}"
+               min="0" required>
+    </div>
+    <button type="submit">Создать товар</button>
+</form>
+<a th:href="@{/dashboard/products}">Назад к товарам</a>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Информация о товаре</title>
+</head>
+<body>
+<h1>Информация о товаре</h1>
+<div>
+    <p>ID: <span th:text="${product.id}"></span></p>
+    <p>Название: <span th:text="${product.productName}"></span></p>
+    <p>Описание: <span th:text="${product.productDescription}"></span></p>
+    <p>Цена: <span th:text="${product.price}"></span></p>
+    <p>Единица измерения: <span th:text="${product.unit}"></span></p>
+    <p>Количество: <span th:text="${product.quantity}"></span></p>
+    <p>Активен: <span th:text="${product.active ? 'Да' : 'Нет'}"></span></p>
+    <p>
+        Категория:
+        <span th:text="${product.category != null
+            ? product.category.categoryName : 'Не указана'}"></span>
+    </p>
+    <p>
+        Производитель:
+        <span th:text="${product.manufacturer != null
+            ? product.manufacturer.manufacturerName : 'Не указан'}"></span>
+    </p>
+</div>
+<a th:href="@{/dashboard/products/edit-product/{id}(id=${product.id})}">
+    Редактировать
+</a>
+<a th:href="@{/dashboard/products}">Назад к товарам</a>
+</body>
+</html>

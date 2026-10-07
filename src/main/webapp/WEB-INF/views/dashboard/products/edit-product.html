@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Редактирование товара</title>
+</head>
+<body>
+<h1>Редактирование товара</h1>
+<form th:action="@{/dashboard/products/edit-product/{id}(id=${product.id})}"
+      th:object="${product}"
+      method="post">
+    <input type="hidden" name="_method" value="PATCH">
+    <div>
+        <label for="productName">Название товара:</label>
+        <input type="text" id="productName"
+               th:field="*{productName}" required>
+    </div>
+    <div>
+        <label for="productDescription">Описание:</label>
+        <textarea id="productDescription"
+                  th:field="*{productDescription}"></textarea>
+    </div>
+    <div>
+        <label for="price">Цена:</label>
+        <input type="number" id="price" th:field="*{price}"
+               min="0.01" step="0.01" required>
+    </div>
+    <div>
+        <label for="unit">Единица измерения:</label>
+        <input type="text" id="unit" th:field="*{unit}" required>
+    </div>
+    <div>
+        <label for="quantity">Количество:</label>
+        <input type="number" id="quantity" th:field="*{quantity}"
+               min="0" required>
+    </div>
+    <div>
+        <label for="active">Активен:</label>
+        <input type="checkbox" id="active" th:field="*{active}">
+    </div>
+    <div>
+        <label for="categoryId">Категория:</label>
+        <select id="categoryId" name="categoryId" required>
+            <option th:each="category : ${categories}"
+                    th:value="${category.id}"
+                    th:text="${category.categoryName}"
+                    th:selected="${product.category != null
+                    and category.id == product.category.id}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <label for="manufacturerId">Производитель:</label>
+        <select id="manufacturerId" name="manufacturerId" required>
+            <option th:each="manufacturer : ${manufacturers}"
+                    th:value="${manufacturer.id}"
+                    th:text="${manufacturer.manufacturerName}"
+                    th:selected="${product.manufacturer != null
+                    and manufacturer.id == product.manufacturer.id}">
+            </option>
+        </select>
+    </div>
+    <button type="submit">Сохранить изменения</button>
+</form>
+<a th:href="@{/dashboard/products}">Назад к товарам</a>
+</body>
+</html>
