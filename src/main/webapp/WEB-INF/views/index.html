@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Главная</title>
+</head>
+<body>
+<h1>Главная страница</h1>
+<div th:if="${authentication == null or !authentication.isAuthenticated()}">
+    <a th:href="@{/auth/login}">
+        <button type="button">Войти</button>
+    </a>
+    <a th:href="@{/auth/registration}">
+        <button type="button">Зарегистрироваться</button>
+    </a>
+</div>
+<div th:if="${authentication != null and authentication.isAuthenticated()}">
+    <h2>Добро пожаловать, <span th:text="${authentication.name}"></span>!</h2>
+    <form th:action="@{/logout}" method="post"> <button type="submit">Выйти</button> </form>
+</div>
+</body>
+</html>
