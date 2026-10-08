@@ -1,6 +1,5 @@
 package ru.loginov.dev.repositories.impl;
 
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 import ru.loginov.dev.entities.Cart;
@@ -21,5 +20,10 @@ public class HibernateCartRepository implements CartRepository {
                 .createQuery("select c from Cart c where c.user.id = :userId", Cart.class)
                 .setParameter("userId", userId)
                 .uniqueResult();
+    }
+
+    @Override
+    public void addCartToUser(Cart cart){
+        sessionFactory.getCurrentSession().persist(cart);
     }
 }

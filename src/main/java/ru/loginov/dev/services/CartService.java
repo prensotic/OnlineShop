@@ -3,7 +3,9 @@ package ru.loginov.dev.services;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.loginov.dev.entities.Cart;
+import ru.loginov.dev.entities.User;
 import ru.loginov.dev.exceptions.cartExceptions.CartNotFoundException;
+import ru.loginov.dev.exceptions.userExceptions.UserNotFoundException;
 import ru.loginov.dev.repositories.CartRepository;
 
 @Service
@@ -23,5 +25,13 @@ public class CartService {
         if(cart == null) throw new CartNotFoundException("Корзина пользователя с ID: " + userId + " не найдена");
 
         return cart;
+    }
+
+    @Transactional
+    public void addCartToUser(User user){
+        if(user == null)
+            throw new UserNotFoundException("Пользователь указан некорректно");
+        Cart cart = new Cart(user);
+        cartRepository.addCartToUser(cart);
     }
 }

@@ -14,13 +14,9 @@ import ru.loginov.dev.services.ProductService;
 @Controller
 public class IndexController {
     private final ProductService productService;
-    private final CartService cartService;
-    private final CartItemService cartItemService;
 
-    public IndexController(ProductService productService, CartItemService cartItemService, CartService cartService){
+    public IndexController(ProductService productService){
         this.productService = productService;
-        this.cartItemService = cartItemService;
-        this.cartService = cartService;
     }
 
     @GetMapping("/")
@@ -35,9 +31,4 @@ public class IndexController {
         model.addAttribute("product", productService.findProductById(id));
         return "client/product_details";
     }
-
-//    @PostMapping("/product/{id}/add-to-cart")
-//    public String addProductToCart(@PathVariable("id") long id){
-//
-//    }
 }
