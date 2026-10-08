@@ -10,10 +10,12 @@ import ru.loginov.dev.repositories.UserRepository;
 public class AdminService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CartService cartService;
 
-    public AdminService(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public AdminService(UserRepository userRepository, PasswordEncoder passwordEncoder, CartService cartService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cartService = cartService;
     }
 
     @Transactional
@@ -31,5 +33,6 @@ public class AdminService {
         admin.setRole("SUPER_ADMIN");
 
         userRepository.saveUser(admin);
+        cartService.addCartToUser(admin);
     }
 }

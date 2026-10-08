@@ -3,71 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Главная</title>
+
+    <title>Online Shop</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background-color: #222;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .products {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        button,
+        .button {
+            border: none;
+            background-color: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        button:hover,
+        .button:hover {
+            background-color: #555;
+        }
+
+        .cart-button {
+            background-color: #198754;
+        }
+
+        .cart-button:hover {
+            background-color: #157347;
+        }
+
+        .admin-button {
+            background-color: #6f42c1;
+        }
+
+        .admin-button:hover {
+            background-color: #59359a;
+        }
+
+        .logout-button {
+            background-color: #dc3545;
+        }
+
+        .logout-button:hover {
+            background-color: #bb2d3b;
+        }
+
+        .quantity {
+            width: 55px;
+            padding: 7px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 7px;
+            align-items: center;
+        }
+
+        .empty-message {
+            padding: 20px;
+            text-align: center;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
-<h1>Главная страница</h1>
-<div th:if="${authentication == null or !authentication.isAuthenticated()}">
-    <a th:href="@{/auth/login}">
-        <button type="button">Войти</button>
-    </a>
-    <a th:href="@{/auth/registration}">
-        <button type="button">Зарегистрироваться</button>
-    </a>
-</div>
-<div th:if="${authentication != null and authentication.isAuthenticated()}">
-    <h2>
-        Добро пожаловать,
-        <span th:text="${authentication.name}"></span>!
-    </h2>
-    <form th:action="@{/logout}" method="post">
-        <button type="submit">Выйти</button>
-    </form>
-</div>
-<div th:if="${authentication != null and authentication.isAuthenticated()
-    and (authentication.authorities.?[authority == 'ROLE_ADMIN'
-    or authority == 'ROLE_SUPER_ADMIN'].size() > 0)}">
-    <a th:href="@{/dashboard}">
-        <button type="button">Перейти в админ-панель</button>
-    </a>
-</div>
-<hr>
-<h2>Наши товары</h2>
-<p th:if="${#lists.isEmpty(products)}">
-</p>
-<div th:unless="${#lists.isEmpty(products)}">
-    <table border="1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Название</th>
-            <th>Описание</th>
-            <th>Категория</th>
-            <th>Производитель</th>
-            <th>Цена</th>
-            <th>Единица измерения</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${products}"
-            th:if="${product.active}">
-            <td th:text="${product.id}"></td>
-            <td th:text="${product.productName}"></td>
-            <td th:text="${product.productDescription}"></td>
-            <td th:text="${product.category != null
-                ? product.category.categoryName : 'Не указана'}"></td>
-            <td th:text="${product.manufacturer != null
-                ? product.manufacturer.manufacturerName : 'Не указан'}"></td>
-            <td>
-                <span th:text="${product.price}"></span>
-            </td>
-            <td th:text="${product.unit}"></td>
-            <td>
-                <a th:href="@{/product/{id}(id=${product.id})}">Открыть</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<header>
+    <h1>Online Shop</h1>
+    <div class="header-buttons">
+        <div th:if="${authentication == null or !authentication.isAuthenticated()}">
+            <a class="button" th:href="@{/auth/login}">
+                Войти
+            </a>
+            <a class="button" th:href="@{/auth/registration}">
+                Регистрация
+            </a>
+        </div>
+        <div th:if="${authentication != null and authentication.isAuthenticated()}">
+            <a class="button cart-button" th:href="@{/cart}">
+                🛒 Корзина
+            </a>
+            <a class="button admin-button"
+               th:if="${authentication.authorities.?[
+                    authority == 'ROLE_ADMIN'
+                    or authority == 'ROLE_SUPER_ADMIN'
+               ].size() > 0}"
+               th:href="@{/dashboard}">
+                Админ-панель
+            </a>
+            <form th:action="@{/logout}" method="post" style="display: inline;">
+                <button class="logout-button" type="submit">
+                    Выйти
+                </button>
+            </form>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="welcome"
+         th:if="${authentication != null and authentication.isAuthenticated()}">
+        <h2>
+            Добро пожаловать,
+            <span th:text="${authentication.name}"></span>!
+        </h2>
+    </div>
+    <div class="products">
+        <h2>Наши товары</h2>
+        <div th:if="${#lists.isEmpty(products)}"
+             class="empty-message">
+            Товаров пока нет.
+        </div>
+        <table th:unless="${#lists.isEmpty(products)}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Категория</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Единица</th>
+                <th>Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}"
+                th:if="${product.active}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.productName}"></td>
+                <td th:text="${product.productDescription}"></td>
+                <td th:text="${product.category != null
+                    ? product.category.categoryName
+                    : 'Не указана'}">
+                </td>
+                <td th:text="${product.manufacturer != null
+                    ? product.manufacturer.manufacturerName
+                    : 'Не указан'}">
+                </td>
+                <td>
+                    <strong th:text="${product.price}"></strong>
+                </td>
+                <td th:text="${product.unit}"></td>
+                <td>
+                    <div class="product-actions">
+                        <a class="button"
+                           th:href="@{/product/{id}(id=${product.id})}">
+                            Открыть
+                        </a>
+                        <div th:if="${authentication != null
+                            and authentication.isAuthenticated()}">
+                            <form th:action="@{/product/add-product-to-cart/{id}(id=${product.id})}" method="post">
+                                <button type="submit">Добавить в корзину</button>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>
