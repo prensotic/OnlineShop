@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Информация о категории</title>
+</head>
+<body>
+<h1>Информация о категории</h1>
+<div>
+    <p>
+        ID:
+        <span th:text="${category.id}"></span>
+    </p>
+    <p>
+        Название:
+        <span th:text="${category.categoryName}"></span>
+    </p>
+</div>
+<p>
+    <a th:href="@{/dashboard/categories/edit-category/{id}(id=${category.id})}">
+        Редактировать
+    </a>
+</p>
+<p>
+    <a th:href="@{/dashboard/categories}">Назад к категориям</a>
+</p>
+</body>
+</html>

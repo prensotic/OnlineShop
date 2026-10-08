@@ -6,6 +6,21 @@
 </head>
 <body>
     <h1>Админ панель</h1>
+    <p>
+        <a th:href="@{/dashboard/products}">
+            Товары
+        </a>
+    </p>
+    <p>
+        <a th:href="@{/dashboard/manufacturers}">
+            Производители
+        </a>
+    </p>
+    <p>
+        <a th:href="@{/dashboard/categories}">
+            Категории
+        </a>
+    </p>
     <form th:action="@{/logout}" method="post"> <button type="submit">Выйти</button> </form>
 </body>
 </html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Добавление категории</title>
+</head>
+<body>
+<h1>Добавление категории</h1>
+<form th:action="@{/dashboard/categories/new-category}"
+      th:object="${category}"
+      method="post">
+    <div>
+        <label for="categoryName">Название категории:</label>
+        <input type="text"
+               id="categoryName"
+               th:field="*{categoryName}"
+               maxlength="20"
+               required>
+    </div>
+    <button type="submit">Создать категорию</button>
+</form>
+<p>
+    <a th:href="@{/dashboard/categories}">Назад к категориям</a>
+</p>
+</body>
+</html>
