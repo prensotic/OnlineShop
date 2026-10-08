@@ -35,13 +35,13 @@ public class AdminProductController {
     @GetMapping("/products/{id}")
     public String productDetailsPage(@PathVariable("id") long id, Model model){
         model.addAttribute("product", productService.findProductById(id));
-        return "dashboard/products/product-details";
+        return "dashboard/products/product_details";
     }
 
     @GetMapping("/product/new-product")
     public String createProductPage(Model model){
         model.addAttribute("product", new Product());
-        return "dashboard/products/new-product";
+        return "dashboard/products/new_product";
     }
 
     @PostMapping("/products")
@@ -70,7 +70,7 @@ public class AdminProductController {
         model.addAttribute("product", productService.findProductById(id));
         model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("manufacturers", manufacturerService.getAllManufacturers());
-        return "dashboard/products/edit-product";
+        return "dashboard/products/edit_product";
     }
 
     @PatchMapping("/products/edit-product/{id}")

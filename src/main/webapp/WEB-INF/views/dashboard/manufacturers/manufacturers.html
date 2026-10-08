@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Производители</title>
+</head>
+<body>
+<h1>Список производителей</h1>
+<a th:href="@{/dashboard/manufacturers/new-manufacturer}">
+    <button type="button">Добавить производителя</button>
+</a>
+<p th:if="${#lists.isEmpty(manufacturers)}">
+    Производители отсутствуют.
+</p>
+<table th:unless="${#lists.isEmpty(manufacturers)}" border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Страна</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="manufacturer : ${manufacturers}">
+        <td th:text="${manufacturer.id}"></td>
+        <td th:text="${manufacturer.manufacturerName}"></td>
+        <td th:text="${manufacturer.country}"></td>
+        <td>
+            <a th:href="@{/dashboard/manufacturers/{id}(id=${manufacturer.id})}">
+                Подробнее
+            </a>
+            <a th:href="@{/dashboard/manufacturers/edit-manufacturer/{id}(id=${manufacturer.id})}">
+                Редактировать
+            </a>
+            <form th:action="@{/dashboard/manufacturers/{id}(id=${manufacturer.id})}"
+                  method="post">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit">Удалить</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<p>
+    <a th:href="@{/dashboard}">Назад в панель управления</a>
+</p>
+</body>
+</html>

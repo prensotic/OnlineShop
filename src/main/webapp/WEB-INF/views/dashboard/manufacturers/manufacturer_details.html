@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Информация о производителе</title>
+</head>
+<body>
+<h1>Информация о производителе</h1>
+<div>
+    <p>
+        ID:
+        <span th:text="${manufacturer.id}"></span>
+    </p>
+    <p>
+        Название:
+        <span th:text="${manufacturer.manufacturerName}"></span>
+    </p>
+    <p>
+        Описание:
+        <span th:text="${manufacturer.manufacturerDescription}"></span>
+    </p>
+    <p>
+        Страна:
+        <span th:text="${manufacturer.country}"></span>
+    </p>
+</div>
+<p>
+    <a th:href="@{/dashboard/manufacturers/edit-manufacturer/{id}(id=${manufacturer.id})}">
+        <button type="button">Редактировать</button>
+    </a>
+</p>
+<p>
+    <a th:href="@{/dashboard/manufacturers}">Назад к производителям</a>
+</p>
+</body>
+</html>

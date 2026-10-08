@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Добавление производителя</title>
+</head>
+<body>
+<h1>Добавление производителя</h1>
+<form th:action="@{/dashboard/manufacturers/new-manufacturer}"
+      th:object="${manufacturer}"
+      method="post">
+    <div>
+        <label for="manufacturerName">Название:</label>
+        <input type="text"
+               id="manufacturerName"
+               th:field="*{manufacturerName}"
+               maxlength="50"
+               required>
+    </div>
+    <div>
+        <label for="manufacturerDescription">Описание:</label>
+        <textarea id="manufacturerDescription"
+                  th:field="*{manufacturerDescription}"></textarea>
+    </div>
+    <div>
+        <label for="country">Страна:</label>
+        <input type="text"
+               id="country"
+               th:field="*{country}"
+               maxlength="50"
+               required>
+    </div>
+    <button type="submit">Создать производителя</button>
+</form>
+<p>
+    <a th:href="@{/dashboard/manufacturers}">Назад к производителям</a>
+</p>
+</body>
+</html>
