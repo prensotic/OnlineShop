@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Главная</title>
+</head>
+<body>
+<h1>Главная страница</h1>
+<div th:if="${authentication == null or !authentication.isAuthenticated()}">
+    <a th:href="@{/auth/login}">
+        <button type="button">Войти</button>
+    </a>
+    <a th:href="@{/auth/registration}">
+        <button type="button">Зарегистрироваться</button>
+    </a>
+</div>
+<div th:if="${authentication != null and authentication.isAuthenticated()}">
+    <h2>
+        Добро пожаловать,
+        <span th:text="${authentication.name}"></span>!
+    </h2>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Выйти</button>
+    </form>
+</div>
+<div th:if="${authentication != null and authentication.isAuthenticated()
+    and (authentication.authorities.?[authority == 'ROLE_ADMIN'
+    or authority == 'ROLE_SUPER_ADMIN'].size() > 0)}">
+    <a th:href="@{/dashboard}">
+        <button type="button">Перейти в админ-панель</button>
+    </a>
+</div>
+<hr>
+<h2>Наши товары</h2>
+<p th:if="${#lists.isEmpty(products)}">
+</p>
+<div th:unless="${#lists.isEmpty(products)}">
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Описание</th>
+            <th>Категория</th>
+            <th>Производитель</th>
+            <th>Цена</th>
+            <th>Единица измерения</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${products}"
+            th:if="${product.active}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.productName}"></td>
+            <td th:text="${product.productDescription}"></td>
+            <td th:text="${product.category != null
+                ? product.category.categoryName : 'Не указана'}"></td>
+            <td th:text="${product.manufacturer != null
+                ? product.manufacturer.manufacturerName : 'Не указан'}"></td>
+            <td>
+                <span th:text="${product.price}"></span>
+            </td>
+            <td th:text="${product.unit}"></td>
+            <td>
+                <a th:href="@{/product/{id}(id=${product.id})}">Открыть</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

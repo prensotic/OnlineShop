@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Информация о товаре</title>
+</head>
+<body>
+<a th:href="@{/}">На главную</a>
+<h1>Информация о товаре</h1>
+<div th:if="${product != null}">
+    <h2 th:text="${product.productName}">Название товара</h2>
+    <p>
+        <strong>ID:</strong>
+        <span th:text="${product.id}"></span>
+    </p>
+    <p>
+        <strong>Описание:</strong>
+        <span th:text="${product.productDescription != null
+            ? product.productDescription : 'Описание отсутствует'}"></span>
+    </p>
+    <p>
+        <strong>Категория:</strong>
+        <span th:text="${product.category != null
+            ? product.category.categoryName : 'Не указана'}"></span>
+    </p>
+    <p>
+        <strong>Производитель:</strong>
+        <span th:text="${product.manufacturer != null
+            ? product.manufacturer.manufacturerName : 'Не указан'}"></span>
+    </p>
+    <p>
+        <strong>Цена:</strong>
+        <span th:text="${product.price}"></span>
+    </p>
+    <p>
+        <strong>Единица измерения:</strong>
+        <span th:text="${product.unit}"></span>
+    </p>
+    <p>
+        <strong>Количество на складе:</strong>
+        <span th:text="${product.quantity}"></span>
+    </p>
+    <p>
+        <strong>Статус:</strong>
+        <span th:text="${product.active ? 'Активен' : 'Неактивен'}"></span>
+    </p>
+</div>
+<div th:if="${product == null}">
+    <h2>Товар не найден</h2>
+</div>
+</body>
+</html>

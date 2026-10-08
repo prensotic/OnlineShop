@@ -1,4 +1,4 @@
-package ru.loginov.dev.controllers;
+package ru.loginov.dev.controllers.adminControllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

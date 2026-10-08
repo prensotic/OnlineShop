@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.loginov.dev.entities.User;
 import ru.loginov.dev.services.AuthService;
+import ru.loginov.dev.services.CartService;
 
 @Controller
 @RequestMapping("/auth")
