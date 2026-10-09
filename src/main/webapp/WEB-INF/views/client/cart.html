@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Моя корзина</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .cart {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 9px 14px;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #555;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 35px 10px;
+            color: #777;
+        }
+
+        .price {
+            white-space: nowrap;
+            font-weight: bold;
+        }
+
+        .navigation {
+            margin-bottom: 20px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .quantity-controls form {
+            margin: 0;
+        }
+
+        .quantity-button {
+            width: 32px;
+            height: 32px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        .quantity-button:hover {
+            background: #555;
+        }
+
+        .quantity {
+            min-width: 24px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .product-link {
+            color: #222;
+            text-decoration: none;
+        }
+
+        .product-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Моя корзина</h1>
+</header>
+
+<div class="container">
+
+    <div class="navigation">
+        <a class="button" th:href="@{/}">
+            Продолжить покупки
+        </a>
+    </div>
+
+    <div class="cart">
+        <h2>Товары в корзине</h2>
+
+        <!-- Пустая корзина -->
+        <div class="empty" th:if="${#lists.isEmpty(cartItems)}">
+            <h3>Ваша корзина пока пуста</h3>
+            <p>Добавьте товары из нашего каталога.</p>
+
+            <a class="button" th:href="@{/}">
+                Перейти к товарам
+            </a>
+        </div>
+
+        <!-- Товары в корзине -->
+        <table th:unless="${#lists.isEmpty(cartItems)}">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Описание</th>
+                <th>Категория</th>
+                <th>Производитель</th>
+                <th>Цена</th>
+                <th>Единица измерения</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${cartItems}">
+
+                <td th:text="${item.product.id}"></td>
+
+                <td>
+                    <a class="product-link"
+                       th:href="@{/product/{id}(id=${item.product.id})}"
+                       th:text="${item.product.productName}">
+                    </a>
+                </td>
+
+                <td th:text="${item.product.productDescription != null
+                    ? item.product.productDescription : 'Нет описания'}">
+                </td>
+
+                <td th:text="${item.product.category != null
+                    ? item.product.category.categoryName : 'Не указана'}">
+                </td>
+
+                <td th:text="${item.product.manufacturer != null
+                    ? item.product.manufacturer.manufacturerName : 'Не указан'}">
+                </td>
+
+                <td class="price">
+                    <span th:text="${item.product.price}"></span>
+                </td>
+
+                <td th:text="${item.product.unit}"></td>
+
+                <!-- Управление количеством -->
+                <td>
+                    <div class="quantity-controls">
+
+                        <!-- Уменьшить количество -->
+                        <form th:action="@{/cart/reduce-quantity/{productId}
+                            (productId=${item.product.id})}"
+                              method="post">
+
+                            <button type="submit"
+                                    class="quantity-button"
+                                    aria-label="Уменьшить количество">
+                                −
+                            </button>
+                        </form>
+
+                        <!-- Количество товара в корзине -->
+                        <span class="quantity"
+                              th:text="${item.quantity}">
+                        </span>
+
+                        <!-- Увеличить количество -->
+                        <form th:action="@{/cart/add-quantity/{productId}
+                            (productId=${item.product.id})}"
+                              method="post">
+
+                            <button type="submit"
+                                    class="quantity-button"
+                                    aria-label="Увеличить количество">
+                                +
+                            </button>
+                        </form>
+
+                    </div>
+                </td>
+
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

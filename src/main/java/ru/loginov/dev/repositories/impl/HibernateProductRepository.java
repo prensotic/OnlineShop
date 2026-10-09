@@ -69,4 +69,19 @@ public class HibernateProductRepository implements ProductRepository {
         Product product = findProductById(id);
         if(product != null) sessionFactory.getCurrentSession().remove(product);
     }
+
+    @Override
+    public List<Product> findProductsInCart(long userId) {
+        return sessionFactory
+                .getCurrentSession()
+                .createQuery(
+                        "select p " +
+                                "from Cart c " +
+                                "join c.cartItems ci " +
+                                "join ci.product p " +
+                                "where c.user.id = :userId",
+                        Product.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
 }

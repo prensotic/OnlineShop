@@ -125,4 +125,10 @@ public class ProductService {
         findProductById(id);
         productRepository.deleteProduct(id);
     }
+
+    @Transactional
+    public List<Product> findProductsInCart(long userId){
+        if(userId <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
+        return productRepository.findProductsInCart(userId);
+    }
 }
