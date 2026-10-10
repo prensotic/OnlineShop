@@ -41,13 +41,17 @@ public class OrderService {
     }
 
     @Transactional
-    public void createOrder(User user, BigDecimal amount){
+    public Order createOrder(User user, BigDecimal amount){
         if(user == null) throw new IllegalArgumentException("Пользователь указан некорректно");
 
         if(amount == null || amount.compareTo(BigDecimal.ZERO) <= 0)
             throw new IllegalArgumentException("Сумма заказа должна быть положительной");
 
-        orderRepository.saveOrder(new Order(user, amount));
+        Order order = new Order(user, amount);
+
+        orderRepository.saveOrder(order);
+
+        return order;
     }
 
     @Transactional
@@ -98,6 +102,11 @@ public class OrderService {
             throw new IllegalArgumentException("Заказ нельзя отменить");
 
         order.setStatus("CANCELLED");
+    }
+
+    @Transactional
+    public List<Order> findOrdersWithItemsByUserId(long userId) {
+        return orderRepository.findOrdersWithItemsByUserId(userId);
     }
 
     @Transactional

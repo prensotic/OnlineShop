@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Детали заказа</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .order-info {
+            padding: 20px;
+            margin-bottom: 25px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .order-info p {
+            margin: 10px 0;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #e9edf2;
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .back-button {
+            background-color: #64748b;
+        }
+
+        .back-button:hover {
+            background-color: #475569;
+        }
+
+        .empty-message {
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Заказ №<span th:text="${order.id}"></span></h1>
+
+    <div class="order-info">
+        <p>
+            <strong>Дата оформления:</strong>
+            <span th:text="${#temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+        </p>
+
+        <p>
+            <strong>Статус:</strong>
+            <span th:text="${order.status}"></span>
+        </p>
+
+        <p>
+            <strong>Сумма заказа:</strong>
+            <span th:text="${order.amount}"></span> ₽
+        </p>
+    </div>
+
+    <h2>Товары в заказе</h2>
+
+    <div th:if="${#lists.isEmpty(orderItems)}" class="empty-message">
+        В этом заказе нет товаров.
+    </div>
+
+    <div th:unless="${#lists.isEmpty(orderItems)}" class="table-wrapper">
+        <table>
+            <thead>
+            <tr>
+                <th>Товар</th>
+                <th>Цена за единицу</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="item : ${orderItems}">
+                <td th:text="${item.product.productName}"></td>
+                <td>
+                    <span th:text="${item.product.price}"></span> ₽
+                </td>
+                <td th:text="${item.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="actions">
+        <a th:href="@{/orders}" class="button back-button">
+            К моим заказам
+        </a>
+
+        <a th:href="@{/}" class="button">
+            На главную
+        </a>
+    </div>
+
+</div>
+</body>
+</html>

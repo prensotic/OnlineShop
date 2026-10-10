@@ -40,7 +40,8 @@ public class ManufacturerService {
 
         Manufacturer manufacturer = manufacturerRepository.findManufacturerByName(manufacturerName);
 
-        if(manufacturer == null) throw new ManufacturerNotFoundException("Производитель с именем: " + manufacturerName + " не найден");
+        if(manufacturer == null)
+            throw new ManufacturerNotFoundException("Производитель с именем: " + manufacturerName + " не найден");
 
         return manufacturer;
     }

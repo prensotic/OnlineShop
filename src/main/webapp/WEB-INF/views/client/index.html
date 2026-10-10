@@ -149,6 +149,9 @@
             <a class="button cart-button" th:href="@{/cart}">
                 🛒 Корзина
             </a>
+            <a class="button" th:href="@{/orders}">
+                Мои заказы
+            </a>
             <a class="button admin-button"
                th:if="${authentication.authorities.?[
                     authority == 'ROLE_ADMIN'

@@ -240,6 +240,13 @@
             </tr>
             </tbody>
         </table>
+        <div class="checkout" th:if="${!#lists.isEmpty(cartItems)}">
+            <form th:action="@{/orders/checkout}" method="post">
+                <button type="submit" class="button checkout-button">
+                    Оформить заказ
+                </button>
+            </form>
+        </div>
     </div>
 </div>
 

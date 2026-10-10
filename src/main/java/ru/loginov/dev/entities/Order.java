@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -93,5 +94,9 @@ public class Order {
 
     public Payment getPayment(){
         return payment;
+    }
+
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
     }
 }

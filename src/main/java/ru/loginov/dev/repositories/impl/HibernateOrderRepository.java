@@ -32,6 +32,21 @@ public class HibernateOrderRepository implements OrderRepository {
     }
 
     @Override
+    public List<Order> findOrdersWithItemsByUserId(long userId) {
+        return sessionFactory.getCurrentSession()
+                .createQuery(
+                        "select distinct o " +
+                                "from Order o " +
+                                "join fetch o.orderItems oi " +
+                                "join fetch oi.product " +
+                                "where o.user.id = :userId",
+                        Order.class
+                )
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
+    @Override
     public Order findOrderById(long id) {
         return sessionFactory.getCurrentSession().get(Order.class, id);
     }

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мои заказы</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            margin: 0;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 18px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .navigation {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background: #555;
+        }
+
+        .orders {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .order {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .order-header h2 {
+            margin: 0 0 10px;
+        }
+
+        .order-info {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 7px 12px;
+            border-radius: 5px;
+            background: #eee;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: #eee;
+        }
+
+        tbody tr:hover {
+            background: #fafafa;
+        }
+
+        .product-link {
+            color: #222;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .product-link:hover {
+            text-decoration: underline;
+        }
+
+        .price {
+            white-space: nowrap;
+        }
+
+        .order-total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-radius: 8px;
+            color: #777;
+        }
+
+        .empty h2 {
+            color: #333;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 18px 20px;
+            }
+
+            .order {
+                padding: 15px;
+            }
+
+            .order-header {
+                flex-direction: column;
+            }
+
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Мои заказы</h1>
+</header>
+<div class="container">
+    <div class="navigation">
+        <a class="button" th:href="@{/}">
+            Продолжить покупки
+        </a>
+        <a class="button" th:href="@{/cart}">
+            Моя корзина
+        </a>
+    </div>
+    <div class="empty" th:if="${#lists.isEmpty(orders)}">
+        <h2>У вас пока нет заказов</h2>
+        <p>Оформите первый заказ, чтобы он появился здесь.</p>
+        <a class="button" th:href="@{/}">
+            Перейти к товарам
+        </a>
+    </div>
+    <div class="orders" th:unless="${#lists.isEmpty(orders)}">
+        <section class="order" th:each="order : ${orders}">
+            <div class="order-header">
+                <div>
+                    <h2>
+                        Заказ №<span th:text="${order.id}"></span>
+                    </h2>
+                    <div class="order-info">
+                        <p>
+                            Дата оформления:
+                            <span th:text="${order.createdAt != null
+                                ? #temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')
+                                : 'Не указана'}">
+                            </span>
+                        </p>
+                        <p>
+                            Сумма заказа:
+                            <span th:text="${order.amount}"></span>
+                        </p>
+                    </div>
+                </div>
+                <div>
+                    <span class="order-status"
+                          th:text="${order.status}">
+                    </span>
+                </div>
+            </div>
+            <h3>Товары в заказе</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID товара</th>
+                        <th>Название</th>
+                        <th>Цена за единицу</th>
+                        <th>Количество</th>
+                        <th>Стоимость</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="item : ${order.orderItems}">
+                        <td th:text="${item.product.id}"></td>
+                        <td>
+                            <a class="product-link"
+                               th:href="@{/product/{id}(id=${item.product.id})}"
+                               th:text="${item.product.productName}">
+                            </a>
+                        </td>
+                        <td class="price"
+                            th:text="${item.product.price}">
+                        </td>
+                        <td th:text="${item.quantity}"></td>
+                        <td class="price"
+                            th:text="${item.product.price * item.quantity}">
+                        </td>
+                    </tr>
+                        <a th:href="@{/orders/order-details/{order-id}(order-id=${order.id})}"
+                           class="button">
+                            Перейти к заказу
+                        </a>
+                    </tbody>
+                </table>
+            </div>
+            <div class="order-total">
+                Итого:
+                <span th:text="${order.amount}"></span>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>

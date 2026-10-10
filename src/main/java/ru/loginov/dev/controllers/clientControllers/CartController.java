@@ -18,16 +18,13 @@ import ru.loginov.dev.services.UserService;
 @Controller
 @RequestMapping("/")
 public class CartController {
-    private final ProductService productService;
     private final UserService userService;
     private final CartItemService cartItemService;
     private final CartService cartService;
 
-    public CartController(ProductService productService,
-                          UserService userService,
+    public CartController(UserService userService,
                           CartItemService cartItemService,
                           CartService cartService) {
-        this.productService = productService;
         this.userService = userService;
         this.cartItemService = cartItemService;
         this.cartService = cartService;
