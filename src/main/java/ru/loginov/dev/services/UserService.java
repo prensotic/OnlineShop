@@ -116,4 +116,13 @@ public class UserService {
 
         userRepository.deleteUser(id);
     }
+
+    @Transactional
+    public void deactivateUser(long id){
+        if(id <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
+
+        User user = findUserById(id);
+
+        user.setActive(false);
+    }
 }

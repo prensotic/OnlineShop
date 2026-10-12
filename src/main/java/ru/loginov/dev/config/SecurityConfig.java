@@ -64,7 +64,8 @@ public class SecurityConfig {
                                 "/",
                                 "/auth/registration",
                                 "/auth/login",
-                                "/products"
+                                "/products",
+                                "/product/{id}"
                         ).permitAll()
                         .requestMatchers("/dashboard/**")
                         .hasAnyRole("ADMIN", "SUPER_ADMIN")

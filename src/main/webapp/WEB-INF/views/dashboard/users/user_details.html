@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Информация о пользователе</title>
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: #222;
+            color: white;
+            padding: 20px 30px;
+        }
+
+        header h1 { margin: 0; }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .field {
+            margin: 18px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .field-value {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover { background: #555; }
+
+        .danger-button { background: #b42318; }
+        .danger-button:hover { background: #8f1d14; }
+
+        .status-active { color: #18783b; }
+        .status-inactive { color: #b42318; }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Информация о пользователе</h1>
+</header>
+
+<div class="container">
+    <div class="navigation">
+        <a class="button" th:href="@{/dashboard/users}">
+            К списку пользователей
+        </a>
+        <a class="button" th:href="@{/dashboard}">
+            Панель управления
+        </a>
+    </div>
+
+    <section class="card">
+        <h2>
+            Пользователь №<span th:text="${user.id}"></span>
+        </h2>
+
+        <div class="field">
+            <span class="field-label">Имя пользователя</span>
+            <span class="field-value" th:text="${user.username}"></span>
+        </div>
+
+        <div class="field">
+            <span class="field-label">Email</span>
+            <span class="field-value" th:text="${user.email}"></span>
+        </div>
+
+        <div class="field">
+            <span class="field-label">Дата регистрации</span>
+            <span class="field-value"
+                  th:text="${user.registrationDate != null
+                    ? #temporals.format(user.registrationDate, 'dd.MM.yyyy HH:mm')
+                    : 'Не указана'}"></span>
+        </div>
+
+        <div class="field">
+            <span class="field-label">Статус учётной записи</span>
+            <span class="field-value"
+                  th:classappend="${user.active} ? ' status-active' : ' status-inactive'"
+                  th:text="${user.active} ? 'Активна' : 'Неактивна'"></span>
+        </div>
+
+        <div class="actions">
+            <form th:if="${user.active}"
+                  th:action="@{/dashboard/users/detach-user/{id}(id=${user.id})}"
+                  method="post"
+                  onsubmit="return confirm('Вы уверены, что хотите деактивировать этого пользователя?');">
+
+                <input type="hidden" name="_method" value="PATCH">
+
+                <button class="button danger-button" type="submit">
+                    Деактивировать пользователя
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>
