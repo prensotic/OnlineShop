@@ -3,10 +3,7 @@ package ru.loginov.dev.controllers.clientControllers;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.loginov.dev.entities.*;
 import ru.loginov.dev.services.*;
 
@@ -72,7 +69,8 @@ public class OrderController {
     public String orderDetailsPage(@PathVariable("order-id") long id, Authentication authentication, Model model){
         User user = userService.findUserByUsername(authentication.getName());
         List<Order> orders = orderService.findOrdersByUserId(user.getId());
-        Order order = orders.stream().filter(o -> o.getId() == id).findAny().orElse(null);
+
+        Order order = orders.stream().filter(o -> o.getId() == id).findAny().orElse(null);//Пока так, потом сделаю отдельный метод в бд
 
         if (order == null)
             return "redirect:/orders";
@@ -81,5 +79,20 @@ public class OrderController {
         model.addAttribute("orderItems", orderItemService.findOrderItemsByOrderId(order.getId()));
 
         return "client/order_details";
+    }
+
+    @PatchMapping("/orders/cancel-order/{id}")
+    public String cancelOrder(@PathVariable("id") long id, Authentication authentication){
+        User user = userService.findUserByUsername(authentication.getName());
+        List<Order> orders = orderService.findOrdersByUserId(user.getId());
+
+        Order order = orders.stream().filter(o -> o.getId() == id).findFirst().orElse(null); //Пока так, потом сделаю отдельный метод в бд
+
+        if(order == null)
+            return "redirect:/orders";
+
+        orderService.markOrderAsCancelled(id);
+
+        return "redirect:/orders";
     }
 }

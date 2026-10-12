@@ -249,10 +249,16 @@
                             th:text="${item.product.price * item.quantity}">
                         </td>
                     </tr>
-                        <a th:href="@{/orders/order-details/{order-id}(order-id=${order.id})}"
-                           class="button">
-                            Перейти к заказу
-                        </a>
+                    <a th:href="@{/orders/order-details/{order-id}(order-id=${order.id})}"
+                       class="button">
+                        Перейти к заказу
+                    </a>
+                    <form th:action="@{/orders/cancel-order/{order-id}(order-id=${order.id})}" method="post">
+                        <input type="hidden" name="_method" value="PATCH">
+                        <button type="submit" class="button">
+                            Отменить
+                        </button>
+                    </form>
                     </tbody>
                 </table>
             </div>
