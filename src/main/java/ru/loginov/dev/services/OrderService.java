@@ -114,4 +114,12 @@ public class OrderService {
         findOrderById(id);
         orderRepository.deleteOrder(id);
     }
+
+    @Transactional(readOnly = true)
+    public Order findOrderWithItemsById(long id) {
+        if (id <= 0) throw new IllegalArgumentException("ID заказа должен быть положительным");
+        Order order = orderRepository.findOrderWithItemsById(id);
+        if (order == null) throw new OrderNotFoundException("Заказ с ID: " + id + " не найден");
+        return order;
+    }
 }

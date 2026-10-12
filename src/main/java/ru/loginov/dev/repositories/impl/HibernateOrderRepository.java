@@ -66,4 +66,20 @@ public class HibernateOrderRepository implements OrderRepository {
         Order order = findOrderById(id);
         if(order != null) sessionFactory.getCurrentSession().remove(order);
     }
+
+    @Override
+    public Order findOrderWithItemsById(long id) {
+        return sessionFactory.getCurrentSession()
+                .createQuery(
+                        "select distinct o " +
+                                "from Order o " +
+                                "left join fetch o.orderItems oi " +
+                                "left join fetch oi.product " +
+                                "where o.id = :id",
+                        Order.class
+                )
+                .setParameter("id", id)
+                .uniqueResult();
+    }
+
 }

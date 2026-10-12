@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Подробности заказа</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            padding: 20px 30px;
+            background: #222;
+            color: white;
+        }
+
+        header h1 { margin: 0; }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .navigation {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .button:hover { background: #555; }
+
+        .card {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info p { line-height: 1.6; }
+
+        .table-wrapper { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th { background: #eee; }
+
+        tbody tr:hover { background: #fafafa; }
+
+        .total {
+            margin-top: 20px;
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #777;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 18px 20px; }
+            .card { padding: 15px; }
+            th, td { padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Подробности заказа</h1>
+</header>
+
+<div class="container">
+    <div class="navigation">
+        <a class="button" th:href="@{/dashboard/orders}">
+            К списку заказов
+        </a>
+
+        <a class="button" th:href="@{/dashboard}">
+            Панель управления
+        </a>
+    </div>
+
+    <section class="card">
+        <h2>
+            Заказ №<span th:text="${order.id}"></span>
+        </h2>
+
+        <div class="info">
+            <p>
+                <strong>Покупатель:</strong>
+                <span th:text="${order.user != null
+                    ? order.user.username
+                    : 'Не указан'}"></span>
+            </p>
+
+            <p>
+                <strong>Email:</strong>
+                <span th:text="${order.user != null
+                    ? order.user.email
+                    : 'Не указан'}"></span>
+            </p>
+
+            <p>
+                <strong>Дата оформления:</strong>
+                <span th:text="${order.createdAt != null
+                    ? #temporals.format(order.createdAt, 'dd.MM.yyyy HH:mm')
+                    : 'Не указана'}"></span>
+            </p>
+
+            <p>
+                <strong>Статус:</strong>
+                <span th:text="${order.status}"></span>
+            </p>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>Товары в заказе</h2>
+
+        <p class="empty"
+           th:if="${#lists.isEmpty(order.orderItems)}">
+            В заказе нет товаров.
+        </p>
+
+        <div class="table-wrapper"
+             th:unless="${#lists.isEmpty(order.orderItems)}">
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="item : ${order.orderItems}">
+                        <td th:text="${item.product.id}"></td>
+                        <td th:text="${item.product.productName}"></td>
+                        <td th:text="${item.product.price}"></td>
+                        <td th:text="${item.quantity}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="total">
+            Итого:
+            <span th:text="${order.amount}"></span>
+        </div>
+    </section>
+</div>
+
+</body>
+</html>

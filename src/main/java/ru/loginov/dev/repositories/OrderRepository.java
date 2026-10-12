@@ -12,4 +12,5 @@ public interface OrderRepository {
     void updateOrder(Order order);
     void deleteOrder(long id);
     List<Order> findOrdersWithItemsByUserId(long userId);
+    Order findOrderWithItemsById(long id);
 }
