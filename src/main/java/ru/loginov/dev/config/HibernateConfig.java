@@ -19,7 +19,7 @@ public class HibernateConfig {
         dataSource.setDriverClassName("org.postgresql.Driver");
         dataSource.setUrl("jdbc:postgresql://localhost:5432/online_shop");
         dataSource.setUsername("postgres");
-        dataSource.setPassword("Ilya150906");
+        dataSource.setPassword("root");
 
         return dataSource;
     }
