@@ -13,6 +13,8 @@ import ru.loginov.dev.services.CartService;
 import ru.loginov.dev.services.ProductService;
 import ru.loginov.dev.services.UserService;
 
+import java.util.Collections;
+
 @Controller
 public class IndexController {
     private final ProductService productService;
@@ -56,5 +58,20 @@ public class IndexController {
         cartItemService.addProductToCart(cart, product, 1);
 
         return "redirect:/";
+    }
+
+    @PostMapping("/search")
+    public String searchProductPage(@RequestParam("productName") String productName, Model model){
+        if (productName == null || productName.isBlank()) {
+            model.addAttribute("products", Collections.emptyList());
+            model.addAttribute("searchQuery", "");
+            model.addAttribute("message", "Введите название товара для поиска");
+            return "client/search_product";
+        }
+
+        productName = productName.trim();
+        model.addAttribute("products", productService.findProductsByName(productName));
+        model.addAttribute("searchQuery", productName);
+        return "client/search_product";
     }
 }

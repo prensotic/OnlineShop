@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Поиск товаров</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .search-form input {
+            flex: 1;
+            min-width: 0;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #2563eb;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #1d4ed8;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+        }
+
+        .product-card h2 {
+            margin-top: 0;
+            font-size: 20px;
+        }
+
+        .description {
+            color: #666;
+            overflow-wrap: anywhere;
+        }
+
+        .price {
+            margin: 15px 0;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .message {
+            padding: 15px;
+            background-color: white;
+            border-radius: 6px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 15px;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Поиск товаров</h1>
+
+    <form class="search-form"
+          th:action="@{/search}"
+          method="post">
+
+        <input
+                type="text"
+                id="productName"
+                name="productName"
+                placeholder="Введите название товара"
+                th:value="${searchQuery}"
+                required>
+
+        <button type="submit">Найти</button>
+    </form>
+
+    <p class="message"
+       th:if="${message != null}"
+       th:text="${message}">
+    </p>
+
+    <div th:if="${products != null and !products.isEmpty()}">
+        <h2>Результаты поиска</h2>
+
+        <div class="products">
+            <div class="product-card"
+                 th:each="product : ${products}">
+
+                <h2 th:text="${product.productName}">
+                    Название товара
+                </h2>
+
+                <p class="description"
+                   th:text="${product.productDescription}">
+                    Описание товара
+                </p>
+
+                <p>
+                    Категория:
+                    <span th:text="${product.category.categoryName}">
+                        Категория
+                    </span>
+                </p>
+
+                <p class="price">
+                    <span th:text="${product.price}">0.00</span>
+                    ₽
+                </p>
+
+                <p>
+                    Единица измерения:
+                    <span th:text="${product.unit}">шт.</span>
+                </p>
+
+                <p>
+                    В наличии:
+                    <span th:text="${product.quantity}">0</span>
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <p class="message"
+       th:if="${products != null and products.isEmpty() and message == null}">
+        По вашему запросу товары не найдены.
+    </p>
+
+    <a class="back-link" th:href="@{/}">
+        Вернуться на главную
+    </a>
+
+</div>
+</body>
+</html>

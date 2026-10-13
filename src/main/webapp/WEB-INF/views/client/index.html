@@ -131,6 +131,18 @@
             text-align: center;
             color: #777;
         }
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
     </style>
 </head>
 <body>
@@ -179,6 +191,20 @@
             <span th:text="${authentication.name}"></span>!
         </h2>
     </div>
+    <form class="search-form"
+          th:action="@{/search}"
+          method="post">
+
+        <input
+                type="text"
+                id="productName"
+                name="productName"
+                placeholder="Введите название товара"
+                th:value="${searchQuery}"
+                required>
+
+        <button type="submit">Найти</button>
+    </form>
     <div class="products">
         <h2>Наши товары</h2>
         <div th:if="${#lists.isEmpty(products)}"
