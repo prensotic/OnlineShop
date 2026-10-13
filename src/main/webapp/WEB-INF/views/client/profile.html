@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Мой профиль</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 20px;
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 25px;
+        }
+
+        .card {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+
+        .info-row strong {
+            min-width: 180px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        button, .button {
+            display: inline-block;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover, .button:hover {
+            background: #1d4ed8;
+        }
+
+        .hint {
+            margin-top: 0;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .actions {
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <h1>Мой профиль</h1>
+
+    <div class="actions">
+        <a class="button" th:href="@{/}">
+            На главную
+        </a>
+    </div>
+
+    <!-- Основные данные учетной записи -->
+    <section class="card">
+        <h2>Данные учетной записи</h2>
+
+        <div class="info-row">
+            <strong>Имя пользователя:</strong>
+            <span th:text="${username}"></span>
+        </div>
+
+        <div class="info-row">
+            <strong>Email:</strong>
+            <span th:text="${userEmail}"></span>
+        </div>
+    </section>
+
+    <!-- Персональные данные -->
+    <section class="card">
+        <h2>Персональные данные</h2>
+
+        <p class="hint"
+           th:if="${userPersonalData == null}">
+            Вы ещё не указали персональные данные.
+            Заполните форму ниже.
+        </p>
+
+        <div class="info-row">
+            <strong>Имя:</strong>
+            <span th:text="${userPersonalData != null
+                ? userPersonalData.firstName : 'Не указано'}">
+            </span>
+        </div>
+
+        <div class="info-row">
+            <strong>Фамилия:</strong>
+            <span th:text="${userPersonalData != null
+                ? userPersonalData.lastName : 'Не указана'}">
+            </span>
+        </div>
+
+        <div class="info-row">
+            <strong>Телефон:</strong>
+            <span th:text="${userPersonalData != null
+                ? userPersonalData.phoneNumber : 'Не указан'}">
+            </span>
+        </div>
+    </section>
+
+    <!-- Форма персональных данных -->
+    <section class="card">
+        <h2>Установить персональные данные</h2>
+
+        <p class="hint">
+            Заполните или измените имя, фамилию и номер телефона.
+        </p>
+
+        <form th:action="@{/profile/set-user-personal-data}"
+              method="post">
+
+            <div class="field">
+                <label for="firstName">Имя</label>
+                <input
+                        type="text"
+                        id="firstName"
+                        name="firstName"
+                        maxlength="50"
+                        autocomplete="given-name"
+                        th:value="${userPersonalData != null
+                        ? userPersonalData.firstName : ''}"
+                        required>
+            </div>
+
+            <div class="field">
+                <label for="lastName">Фамилия</label>
+                <input
+                        type="text"
+                        id="lastName"
+                        name="lastName"
+                        maxlength="50"
+                        autocomplete="family-name"
+                        th:value="${userPersonalData != null
+                        ? userPersonalData.lastName : ''}"
+                        required>
+            </div>
+
+            <div class="field">
+                <label for="phoneNumber">Номер телефона</label>
+                <input
+                        type="tel"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        maxlength="20"
+                        autocomplete="tel"
+                        th:value="${userPersonalData != null
+                        ? userPersonalData.phoneNumber : ''}"
+                        required>
+            </div>
+
+            <button type="submit">Сохранить данные</button>
+        </form>
+    </section>
+
+    <!-- Форма изменения пароля -->
+    <section class="card">
+        <h2>Изменить пароль</h2>
+
+        <p class="hint">
+            Введите новый пароль. После сохранения используйте
+            его при следующем входе в учетную запись.
+        </p>
+
+        <form th:action="@{/profile/set-new-password}" method="post">
+            <input type="hidden" name="_method" value="patch">
+
+            <div>
+                <label for="password">Текущий пароль</label>
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password">
+            </div>
+
+            <div>
+                <label for="newPassword">Новый пароль</label>
+                <input
+                        type="password"
+                        id="newPassword"
+                        name="newPassword"
+                        required
+                        minlength="8"
+                        autocomplete="new-password">
+            </div>
+
+            <button type="submit">Изменить пароль</button>
+        </form>
+    </section>
+
+</div>
+</body>
+</html>

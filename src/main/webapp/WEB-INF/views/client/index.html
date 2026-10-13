@@ -152,6 +152,9 @@
             <a class="button" th:href="@{/orders}">
                 Мои заказы
             </a>
+            <a class="button" th:href="@{/profile}">
+                Профиль
+            </a>
             <a class="button admin-button"
                th:if="${authentication.authorities.?[
                     authority == 'ROLE_ADMIN'

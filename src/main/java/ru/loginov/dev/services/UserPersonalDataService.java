@@ -39,13 +39,7 @@ public class UserPersonalDataService {
     public UserPersonalData findUserPersonalDataByUserId(long userId){
         if(userId <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
 
-        UserPersonalData userPersonalData = userPersonalDataRepository.findUserPersonalDataByUserId(userId);
-
-        if(userPersonalData == null)
-            throw new UserPersonalDataNotFound(
-                    "Персональные данные пользователя c ID учетной записи: " + userId + " не найдены");
-
-        return userPersonalData;
+        return userPersonalDataRepository.findUserPersonalDataByUserId(userId);
     }
 
     @Transactional
@@ -72,6 +66,38 @@ public class UserPersonalDataService {
         userPersonalData.setPhoneNumber(phoneNumber);
 
         userPersonalDataRepository.saveUserPersonalData(userPersonalData);
+    }
+
+    @Transactional
+    public void saveOrUpdateUserPersonalData(User user, String firstName, String lastName, String phoneNumber){
+        if(user == null) throw new IllegalArgumentException("Пользователь указан некорректно");
+
+        if(firstName == null || firstName.isBlank())
+            throw new IllegalArgumentException("Имя пользователя указан некорректно");
+
+        if(lastName == null || lastName.isBlank())
+            throw new IllegalArgumentException("Фамилия пользователя указана некорректно");
+
+        if(phoneNumber == null || phoneNumber.isBlank())
+            throw new IllegalArgumentException("Телефон указан некорректно");
+
+        UserPersonalData userPersonalData = findUserPersonalDataByUserId(user.getId());
+
+        if(userPersonalData == null){
+            UserPersonalData newUserPersonalData = new UserPersonalData();
+
+            newUserPersonalData.setUser(user);
+            newUserPersonalData.setFirstName(firstName);
+            newUserPersonalData.setLastName(lastName);
+            newUserPersonalData.setPhoneNumber(phoneNumber);
+
+            userPersonalDataRepository.saveUserPersonalData(newUserPersonalData);
+        }
+        else{
+            userPersonalData.setFirstName(firstName);
+            userPersonalData.setLastName(lastName);
+            userPersonalData.setPhoneNumber(phoneNumber);
+        }
     }
 
     @Transactional

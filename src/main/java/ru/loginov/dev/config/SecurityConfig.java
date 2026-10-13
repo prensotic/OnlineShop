@@ -80,7 +80,9 @@ public class SecurityConfig {
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
                         .successHandler(successHandler)
-                        .failureHandler((request, response, exception) -> {
+                        .failureHandler((request,
+                                         response,
+                                         exception) -> {
                             response.sendRedirect("/auth/login?error");
                         })
                         .permitAll()

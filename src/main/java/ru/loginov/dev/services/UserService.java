@@ -94,6 +94,15 @@ public class UserService {
     }
 
     @Transactional
+    public void updatePassword(long id, String password, String newPassword){
+        if (id <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
+        User user = findUserById(id);
+        if(!passwordEncoder.matches(password, user.getPassword()))
+            throw new IllegalArgumentException("Неверный пароль");
+        user.setPassword(passwordEncoder.encode(newPassword));
+    }
+
+    @Transactional
     public void updateUserProfile(long id, String username, String email) {
         if (id <= 0) throw new IllegalArgumentException("ID пользователя должен быть положительным");
 
